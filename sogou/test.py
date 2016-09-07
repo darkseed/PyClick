@@ -45,8 +45,12 @@ if __name__ == "__main__":
     print "-------------------------------"
 
     for query in query2urls:
+        res = []
         for url in query2urls[query]:
             rel = click_model.predict_relevance(query, url)
+            res.append((rel, url))
+        res = sorted(res, reverse=True)
+        for rel, url in res:
             print query, url, rel
 
 
