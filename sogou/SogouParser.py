@@ -26,7 +26,7 @@ class SogouParser:
 
         :returns: A list of parsed search sessions, wrapped into SearchSession objects.
         """
-        sessions_file = codecs.open(sessions_filename, 'r', 'gb2312')
+        sessions_file = codecs.open(sessions_filename, 'r', 'euc-cn', errors='replace')
         sessions = []
 
         for line in sessions_file:
