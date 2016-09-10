@@ -35,6 +35,7 @@ class SogouParser:
                 break
 
             entry_array = line.strip().split("\t")
+            print entry_array
 
             if len(entry_array) % 4 != 2:  # format checking
                 continue
@@ -44,10 +45,15 @@ class SogouParser:
             session = TaskCentricSearchSession(session_id, query)
             i = 2
 
+            rank = 0
             while i < len(entry_array):
                 url, if_click = entry_array[i: i + 2]
                 i += 4
+                rank += 1
                 result = SearchResult(url, int(if_click))
                 session.web_results.append(result)
+                if rank >= 10:
+                    break  # only use the top10 results
             sessions.append(session)
+            print len(session.web_results)
         return sessions
