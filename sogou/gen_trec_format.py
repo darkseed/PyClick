@@ -37,8 +37,8 @@ if __name__ == '__main__':
             url = url.strip()
             if url not in url2uid:
                 url2uid[url] = uid
+                args.output_docid_file.write("sogou-{0}\t{1}\n".format(uid, url))
                 uid += 1
-                args.output_docid_file.write("{0}\t{1}\n".format(uid, url))
 
     # read url title segmented result
     for line in codecs.open(args.url_title_segmented_file, 'r', 'utf-8'):
