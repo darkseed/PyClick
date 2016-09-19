@@ -8,6 +8,7 @@ if __name__ == '__main__':
     parser.add_argument("click_model_file")
     parser.add_argument("url_title_segmented_file")
     parser.add_argument("output_file", type=argparse.FileType('w'))
+    parser.add_argument("output_docid_file", type=argparse.FileType('w'))
     args = parser.parse_args()
 
     # read selected queries
@@ -37,6 +38,8 @@ if __name__ == '__main__':
             if url not in url2uid:
                 url2uid[url] = uid
                 uid += 1
+                args.output_docid_file.write("{0}\t{1}\n".format(uid, url))
+
     # read url title segmented result
     for line in codecs.open(args.url_title_segmented_file, 'r', 'utf-8'):
         line = line.encode("utf-8")
@@ -69,6 +72,7 @@ if __name__ == '__main__':
             else:
                 rank += 1
             score = -rank
-            jstr = json.dumps({"query": qid2segmented[qid], "doc": {"title": url + ' ' + uid2title[uid]}}, ensure_ascii=False)#.encode('utf-8') 
-            args.output_file.write("{0}\tQ0\tsogou-test-{1}\t{2}\t{3} # {4}\n".format(qid, uid, rank, score, jstr))
+            obj = {"query": qid2segmented[qid], "doc": {"title": uid2title[uid], "url": url}}
+            jstr = json.dumps(obj, ensure_ascii=False)
+            args.output_file.write("{0}\tQ0\tsogou-{1}\t{2}\t{3} # {4}\n".format(qid, uid, rank, score, jstr))
 
