@@ -1,21 +1,22 @@
 import argparse
 import random
-import numpy as np
 import sys
 import os
+import re
+
 reload(sys)
 sys.setdefaultencoding('UTF8')
-import re
 
 
 def gen_old2new(docid2url_file_path):
-    np.random.seed(0)
+    random.seed(0)
     docids = []
     with open(docid2url_file_path) as f:
         for line in f:
             docid, url = line.split('\t')
             docids.append(docid)
-    new_docids = np.random.choice(docids, len(docids), replace=False)
+    new_docids = list(docids)
+    random.shuffle(new_docids)
     return dict(zip(docids, new_docids))
 
 
