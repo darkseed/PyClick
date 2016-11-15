@@ -21,7 +21,7 @@ def gen_old2new(docid2url_file_path):
 
 def change_old(file_path, output_file_path, old2new):
     def docidreplace(matchobj):
-        return old2new[matchobj.group(1)]
+        return old2new[matchobj.group(0)]
     with open(file_path) as f, open(output_file_path, 'w') as fout:
         for line in f:
             re.sub(r'sogou-[0-9]+', docidreplace, line)
