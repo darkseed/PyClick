@@ -25,8 +25,8 @@ def change_old(file_path, output_file_path, old2new):
         return old2new[matchobj.group(0)]
     with open(file_path) as f, open(output_file_path, 'w') as fout:
         for line in f:
-            re.sub(r'sogou-[0-9]+', docidreplace, line)
-            fout.write(line)
+            res = re.sub(r'sogou-[0-9]+', docidreplace, line)
+            fout.write(res)
     return
 
 if __name__ == '__main__':
