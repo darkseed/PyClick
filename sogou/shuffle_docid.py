@@ -41,6 +41,9 @@ if __name__ == '__main__':
         p = os.path.join(args.old_dir, fname)
         op = os.path.join(args.new_dir, fname)
         change_old(p, op, old2new)
+    with open(os.path.join(args.new_dir, "oldid2newid"), 'w') as fout:
+        for old, new in old2new:
+            fout.write("{0}\t{1}\n".format(old, new))
 
 
 
