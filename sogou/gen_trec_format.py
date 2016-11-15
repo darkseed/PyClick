@@ -74,5 +74,5 @@ if __name__ == '__main__':
             score = -rank
             obj = {"query": qid2segmented[qid], "doc": {"title": uid2title[uid], "url": url}}
             jstr = json.dumps(obj, ensure_ascii=False)
-            args.output_file.write("{0}\tQ0\tsogou-{1}\t{2}\t{3} # {4}\n".format(qid, uid, rank, score, jstr))
+            args.output_file.write("{0}\tQ0\t{1}\t{2}\t{3} # {4}\n".format(qid, uid, rank, score, jstr))
 

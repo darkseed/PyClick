@@ -8,6 +8,7 @@ if __name__ == '__main__':
     parser.add_argument("click_model_file")
     parser.add_argument("url_title_segmented_file")
     parser.add_argument("docid_file")
+    parser.add_argument("model")
     parser.add_argument("output_file", type=argparse.FileType('w'))
     args = parser.parse_args()
 
@@ -63,16 +64,26 @@ if __name__ == '__main__':
             if qid != prev_qid:
                 prev_qid = qid
             rel_score = float(rel_score)
+            rel = 0
+            if args.model == "SDBN":
+                if rel_score <= 0.25:
+                    continue
+                elif 0.25 < rel_score <= 0.5:
+                    rel = 1
+                elif 0.5 < rel_score <= 0.75:
+                    rel = 2
+                elif 0.75 < rel_score:
+                    rel = 3
 
-            # for SDBN
-            if rel_score <= 0.25:
-                continue
-            elif 0.25 < rel_score <= 0.5:
-                rel = 1
-            elif 0.5 < rel_score <= 0.75:
-                rel = 2
-            elif 0.75 < rel_score:
-                rel = 3
+            if args.model == "PBM":
+                if rel_score <= 0.1978:
+                    continue
+                elif 0.1978 < rel_score <= 0.4652:
+                    rel = 1
+                elif 0.4653 < rel_score <= 0.7326:
+                    rel = 2
+                elif 0.7326 < rel_score:
+                    rel = 3
 
             obj = {"query": qid2segmented[qid], "doc": {"title": uid2title[uid], "url": url}}
             jstr = json.dumps(obj, ensure_ascii=False)
