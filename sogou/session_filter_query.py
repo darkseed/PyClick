@@ -7,22 +7,18 @@ __author__ = 'Zhuyun Dai'
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("org_sessions_filename")
-    parser.add_argument("query_freq_filename")
-    parser.add_argument("query_freq_cutoff", type=int, help="only select sessions with q"
-                                                            "uery appearing more than the cutoff")
+    parser.add_argument("query_filename")
     parser.add_argument("output_filename")
     args = parser.parse_args()
 
     # read frequent queries
-    query_freq_file = codecs.open(args.query_freq_filename, 'r', 'utf-8', errors='replace')
-    selected_queries = set()
-    for line in query_freq_file:
+    query_file = codecs.open(args.query_filename, 'r', 'utf-8', errors='replace')
+    selected_queries = {} 
+    for line in query_file:
         entry_array = line.strip().split("\t")
-        freq = int(entry_array[0])
+        qid = int(entry_array[0])
         query = entry_array[1].strip()
-        if freq < args.query_freq_cutoff:
-            break
-        selected_queries.add(query)
+        selected_queries[query] = qid
     
     print "selecting {0} queries".format(len(selected_queries))
 
@@ -36,7 +32,7 @@ def main():
         if query in selected_queries:
             output_file.write(line)
 
-    query_freq_file.close()
+    query_file.close()
     sessions_file.close()
     output_file.close()
 

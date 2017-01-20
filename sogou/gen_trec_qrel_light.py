@@ -23,7 +23,6 @@ if __name__ == '__main__':
         query2qid[query] = qid
         qid2segmented[qid] = query_segmented
         qid += 1
-        print query
 
     # read uid <=> url
     url2uid = {}
@@ -35,17 +34,30 @@ if __name__ == '__main__':
             uid, url = line.strip().split('\t')
             url2uid[url] = uid
 
-    # read url title segmented result
-    for line in codecs.open(args.url_title_segmented_file, 'r', 'utf-8'):
-        line = line.encode("utf-8")
-        line = line.strip()
-        if not line or '\t' not in line:
-            continue
-        url, segmented = line.split('\t')
-        if url not in url2uid:
-            continue
-        uid = url2uid[url]
-        uid2title[uid] = segmented
+    # get score distributions 
+    scores = []
+    with codecs.open(args.click_model_file, 'r', 'utf-8', errors="replace") as f:
+        for line in f:
+            line = line.encode("utf-8")
+            query, url, rel_score = line.strip().split(' ')
+            if query not in query2qid:
+                continue
+            url = url.strip()
+            uid = url2uid[url]
+            #if uid not in uid2title:
+            #    print uid, url
+            if url == "http://weixin.qq.com/":
+                continue
+            rel_score = float(rel_score)
+            scores.append(rel_score)
+    scores = sorted(scores)
+    n = float(len(scores))
+    a1 = scores[int(n * 0.77)]
+    a2 = scores[int(n * 0.93)]
+    a3 = scores[int(n * 0.98)]
+    a4 = scores[int(n * 0.99)]
+    print a1, a2, a3, a4
+        
 
     # read click model output , output trec qrels
     prev_qid = -1
@@ -58,8 +70,8 @@ if __name__ == '__main__':
                 continue
             url = url.strip()
             uid = url2uid[url]
-            if uid not in uid2title:
-                print uid, url
+            #if uid not in uid2title:
+            #    print uid, url
             if url == "http://weixin.qq.com/":
                 continue
             qid = query2qid[query]
@@ -91,16 +103,16 @@ if __name__ == '__main__':
                     rel = 3
 
             if args.model == "DCTR":
-                if rel_score <= 0.333334 :
+                if rel_score < a1:
                     continue
-                elif 0.3333 < rel_score <= 0.45 :
+                elif rel_score < a2:
                     rel = 1
-                elif 0.4653 < rel_score <= 0.7326:
+                elif rel_score < a3:
                     rel = 2
-                elif 0.7326 < rel_score:
-                    rel = 3 
+                elif rel_score <= a4:
+                    rel = 3
+                elif a4 < rel_score:
+                    rel = 4
 
-            obj = {"query": qid2segmented[qid], "doc": {"title": uid2title[uid], "url": url}}
-            jstr = json.dumps(obj, ensure_ascii=False)
-            args.output_file.write("{0}\tQ0\tsogou-{1}\t{2} # {3}\n".format(qid, uid, rel, jstr))
+            args.output_file.write("{0}\tQ0\tsogou-{1}\t{2} \n".format(qid, uid, rel))
 

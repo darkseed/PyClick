@@ -45,16 +45,17 @@ def rerank_old(file_path, output_file_path, old2new):
             score = float(score)
             qid = int(qid)
             data.append((qid, old2new[oldid.strip()], score))
-    data.sort(key=lambda item: (int(item[0]), -item[2]))
+    data.sort(key=lambda item: (int(item[0]), -item[2], item[1]))
 
-    with open(output_file_path) as fout:
+    with open(output_file_path, 'w') as fout:
         prev_qid = -1
         r = 0
         for qid, docno, score in data:
             if qid != prev_qid:
                 r = 0
+                prev_qid = qid
             r += 1
-            fout.write("{0}\tQ0\t{1}\t{3} # {4}\n".format(qid, docno, r, score, comment))
+            fout.write("{0}\tQ0\t{1}\t{2}\t{3} # {4}\n".format(qid, docno, r, score, comment))
     return
 
 if __name__ == '__main__':
@@ -65,7 +66,9 @@ if __name__ == '__main__':
     parser.add_argument("--rerank", "-r", action="store_true")
     args = parser.parse_args()
 
-    if args.old2new_file_path:
+    print args.old2new_file_path
+    print args.old2new_file_path is not None
+    if args.old2new_file_path is None:
         docid2url_file_path = os.path.join(args.old_dir, "docid2url")
         old2new = gen_old2new(docid2url_file_path)
         with open(os.path.join(args.new_dir, "oldid2newid"), 'w') as fout:
