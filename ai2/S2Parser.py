@@ -36,7 +36,7 @@ class S2Parser:
 
             obj = json.loads(line)
 
-            query = obj['query']
+            query = obj['query'].lower()
             docs = obj['documents']
             for s in obj['sessions']:
                 session_id += 1
