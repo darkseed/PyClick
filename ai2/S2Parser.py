@@ -1,6 +1,10 @@
 from pyclick.click_models.task_centric.TaskCentricSearchSession import TaskCentricSearchSession
 from pyclick.search_session.SearchResult import SearchResult
 import json
+import sys
+reload(sys)
+sys.setdefaultencoding('UTF8')
+
 
 __author__ = 'Zhuyun Dai'
 
@@ -27,7 +31,7 @@ class S2Parser:
 
         session_id = 0
         for line in sessions_file:
-            if 0 < sessions_max <= len(sessions):
+            if sessions_max > 0 and sessions_max <= len(sessions):
                 break
 
             obj = json.loads(line)
@@ -46,7 +50,7 @@ class S2Parser:
                         if_click = 1
                     result = SearchResult(docid, if_click)
                     session.web_results.append(result)
-                    if rank >= 10:
-                        break  # only use the top10 results
+                    #if rank >= 10:
+                    #    break  # only use the top10 results
                 sessions.append(session)
-            return sessions
+        return sessions

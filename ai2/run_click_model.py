@@ -13,6 +13,10 @@ from pyclick.click_models.PBM import PBM
 from S2Parser import S2Parser
 from S2Utils import  S2Utils
 
+reload(sys)
+sys.setdefaultencoding('UTF8')
+
+
 __author__ = 'Zhuyun Dai'
 
 
