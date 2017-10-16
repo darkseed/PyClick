@@ -3,7 +3,7 @@
 #
 # Full copyright notice can be found in LICENSE.
 #
-from __future__ import division
+
 from abc import abstractmethod
 #from sklearn.metrics import roc_auc_score
 #from scipy.stats import pearsonr
@@ -176,7 +176,7 @@ class CTRPrediction(Evaluation):
         session_dict = self._group_sessions(search_sessions)
         MSEs, weights = [], []
 
-        for query_id, search_sessions in session_dict.items():
+        for query_id, search_sessions in list(session_dict.items()):
             
             train_sets, test_sets = self._split_train_test_sets(search_sessions)
             
@@ -266,7 +266,7 @@ class RankingPerformance(Evaluation):
         for query_id in useful_sessions:
             
             rel = self.relevances[query_id]
-            ideal_ranking = sorted(rel.values(),reverse = True)[:5]
+            ideal_ranking = sorted(list(rel.values()),reverse = True)[:5]
             
             # Only use query if there is a document with a positive ranking. (Otherwise IDCG will be 0 -> NDCG undetermined.)
             if not any(ideal_ranking):

@@ -18,7 +18,7 @@ class TaskCentricEMInference(EMInference):
         if search_tasks is None or len(search_tasks) == 0:
             return
 
-        for iteration in xrange(self.iter_num):
+        for iteration in range(self.iter_num):
             new_click_model = click_model.__class__()
 
             for search_task in search_tasks:
@@ -27,7 +27,7 @@ class TaskCentricEMInference(EMInference):
                     new_session_params = new_click_model.get_session_params(search_session)
 
                     for rank, result in enumerate(search_session.web_results):
-                        for param_name, param in new_session_params[rank].items():
+                        for param_name, param in list(new_session_params[rank].items()):
                             param.update(search_task, search_session, rank, current_session_params)
 
             click_model.params = new_click_model.params

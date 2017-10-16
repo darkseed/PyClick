@@ -149,8 +149,8 @@ class QueryDocumentParamContainer(ParamContainer):
         return str(self)
 
     def apply_each(self, func):
-        for param_dict in self._container.itervalues():
-            for param in param_dict.itervalues():
+        for param_dict in self._container.values():
+            for param in param_dict.values():
                 func(param)
 
 

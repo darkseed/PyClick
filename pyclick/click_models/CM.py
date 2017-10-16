@@ -3,7 +3,7 @@
 #
 # Full copyright notice can be found in LICENSE.
 #
-from __future__ import division
+
 
 from enum import Enum
 from pyclick.click_models.ClickModel import ClickModel

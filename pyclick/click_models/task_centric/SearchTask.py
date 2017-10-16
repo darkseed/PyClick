@@ -37,4 +37,4 @@ class SearchTask(object):
 
             search_tasks[search_session.task].search_sessions.append(search_session)
 
-        return search_tasks.values()
+        return list(search_tasks.values())

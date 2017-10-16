@@ -3,7 +3,7 @@
 #
 # Full copyright notice can be found in LICENSE.
 #
-from __future__ import division
+
 
 from enum import Enum
 import itertools
@@ -209,7 +209,7 @@ class CCM(ClickModel):
         """
         session_clickafterrank = [0] * (session_size + 1)
 
-        for rank in reversed(range(session_size)):
+        for rank in reversed(list(range(session_size))):
             attr = session_params[rank][cls.param_names.attr].value()
             tau_1 = session_params[rank][cls.param_names.cont_noclick].value()
             car = session_clickafterrank[rank + 1]

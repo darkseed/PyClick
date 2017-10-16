@@ -22,16 +22,16 @@ __author__ = 'Ilya Markov'
 
 
 if __name__ == "__main__":
-    print "==============================="
-    print "This is an example of using PyClick for training and testing click models."
-    print "==============================="
+    print("===============================")
+    print("This is an example of using PyClick for training and testing click models.")
+    print("===============================")
 
     if len(sys.argv) < 4:
-        print "USAGE: %s <click_model> <dataset> <sessions_max>" % sys.argv[0]
-        print "\tclick_model - the name of a click model to use."
-        print "\tdataset - the path to the dataset from Yandex Relevance Prediction Challenge"
-        print "\tsessions_max - the maximum number of one-query search sessions to consider"
-        print ""
+        print("USAGE: %s <click_model> <dataset> <sessions_max>" % sys.argv[0])
+        print("\tclick_model - the name of a click model to use.")
+        print("\tdataset - the path to the dataset from Yandex Relevance Prediction Challenge")
+        print("\tsessions_max - the maximum number of one-query search sessions to consider")
+        print("")
         sys.exit(1)
 
     click_model = globals()[sys.argv[1]]()
@@ -47,18 +47,18 @@ if __name__ == "__main__":
     test_sessions = Utils.filter_sessions(search_sessions[train_test_split:], train_queries)
     test_queries = Utils.get_unique_queries(test_sessions)
 
-    print "-------------------------------"
-    print "Training on %d search sessions (%d unique queries)." % (len(train_sessions), len(train_queries))
-    print "-------------------------------"
+    print("-------------------------------")
+    print("Training on %d search sessions (%d unique queries)." % (len(train_sessions), len(train_queries)))
+    print("-------------------------------")
 
     click_model.train(train_sessions)
-    print "\tTrained %s click model:\n%r" % (click_model.__class__.__name__, click_model)
+    print("\tTrained %s click model:\n%r" % (click_model.__class__.__name__, click_model))
 
-    print "-------------------------------"
-    print "Testing on %d search sessions (%d unique queries)." % (len(test_sessions), len(test_queries))
-    print "-------------------------------"
+    print("-------------------------------")
+    print("Testing on %d search sessions (%d unique queries)." % (len(test_sessions), len(test_queries)))
+    print("-------------------------------")
 
     loglikelihood = LogLikelihood()
-    print "\tlog-likelihood: %f" % loglikelihood.evaluate(click_model, test_sessions)
+    print("\tlog-likelihood: %f" % loglikelihood.evaluate(click_model, test_sessions))
     perplexity = Perplexity()
-    print "\tperplexity: %f" % perplexity.evaluate(click_model, test_sessions)[0]
+    print("\tperplexity: %f" % perplexity.evaluate(click_model, test_sessions)[0])

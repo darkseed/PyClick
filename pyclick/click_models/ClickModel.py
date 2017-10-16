@@ -34,7 +34,7 @@ class ClickModel(object):
         :returns: The JSON representation of the model.
         """
         json_dict = {}
-        for param_name, param in self.params.items():
+        for param_name, param in list(self.params.items()):
             json_dict[param_name.name] = param.to_json()
         return json.dumps(json_dict)
 
@@ -45,13 +45,13 @@ class ClickModel(object):
         :param json_param: The JSON representation of the model.
         """
         json_obj = json.loads(json_str)
-        for json_param_name, json_param in json_obj.items():
+        for json_param_name, json_param in list(json_obj.items()):
             param_name = self.param_names[json_param_name]
             self.params[param_name].from_json(json_param)
 
     def __str__(self):
         params_str = ''
-        for param_name, param in self.params.items():
+        for param_name, param in list(self.params.items()):
             params_str += '%s\n%s\n' % (param_name, param)
         return params_str
 
@@ -71,7 +71,7 @@ class ClickModel(object):
         for rank, result in enumerate(search_session.web_results):
             param_dict = {}
 
-            for param_name, param_container in self.params.items():
+            for param_name, param_container in list(self.params.items()):
                 param = param_container.get_for_session_at_rank(search_session, rank)
                 param_dict[param_name] = param
 
